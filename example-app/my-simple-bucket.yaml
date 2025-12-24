@@ -1,0 +1,9 @@
+apiVersion: storage.platform.example.org/v1alpha1
+kind: SimpleBucket
+metadata:
+  name: my-simple-bucket
+spec:
+  parameters:
+    location: APAC
+    labels:
+      environment: dev

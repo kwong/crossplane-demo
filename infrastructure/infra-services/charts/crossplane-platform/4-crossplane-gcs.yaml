@@ -1,0 +1,82 @@
+# Api exposed to application developers
+apiVersion: apiextensions.crossplane.io/v2
+kind: CompositeResourceDefinition
+metadata:
+  name: simplebuckets.storage.platform.example.org
+spec:
+  scope: Namespaced
+  group: storage.platform.example.org
+  names:
+    kind: SimpleBucket          # Developer-facing resource type name
+    plural: simplebuckets       # CRD name will be "simplebuckets"
+  versions:
+    - name: v1alpha1
+      served: true 
+      referenceable: true 
+      schema:
+        openAPIV3Schema:
+          type: object 
+          properties:
+            spec:
+              type: object 
+              properties:
+                parameters:
+                  type: object 
+                  properties:
+                    location:
+                      type: string 
+                      default: APAC 
+                    labels:
+                      type: object 
+                      additionalProperties:
+                        type: string 
+---
+# Mapping to provider resource
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: gcp-gcs-bucket-composition
+spec:
+  compositeTypeRef:
+    apiVersion: storage.platform.example.org/v1alpha1
+    kind: SimpleBucket
+  mode: Pipeline
+  pipeline:
+  - step: patch-and-transform
+    functionRef:  
+      name: function-patch-and-transform
+    input:
+      apiVersion: pt.fn.crossplane.io/v1beta1
+      kind: Resources
+      resources:
+      - name: bucket
+        base:
+          apiVersion: storage.gcp.upbound.io/v1beta1
+          kind: Bucket
+          name: simple-bucket
+          namespace: crossplane-system
+          spec:
+            forProvider:
+              storageClass: STANDARD
+              uniformBucketLevelAccess: true
+              forceDestroy: true
+            patches :
+            - fromFieldPath : "metadata.name"
+              toFieldPath   : "spec.forProvider.name"
+            - fromFieldPath : "spec.parameters.location"
+              toFieldPath   : "spec.forProvider.location"
+            - fromFieldPath : "spec.parameters.labels"
+              toFieldPath   : "spec.forProvider.labels"
+  #     spec: 
+      #   spec:
+      #     forProvider:
+      #       storageClass: STANDARD
+      #       uniformBucketLevelAccess: true
+      #       forceDestroy: true
+      #     providerConfigRef:
+      #       name: default
+      # patches :
+      #   - fromFieldPath : "spec.parameters.location"
+      #     toFieldPath   : "spec.forProvider.location"
+      #   - fromFieldPath : "spec.parameters.labels"
+      #     toFieldPath   : "spec.forProvider.labels"
