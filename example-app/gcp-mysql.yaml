@@ -1,0 +1,15 @@
+apiVersion: sql.gcp.upbound.io/v1beta2
+kind: DatabaseInstance
+metadata:
+  name: example-instance-random
+spec:
+  forProvider:
+    databaseVersion: MYSQL_5_7
+    deletionProtection: false
+    region: asia-southeast1
+    settings:
+      diskSize: 20
+      tier: db-f1-micro
+  providerConfigRef:
+    name: default
+    

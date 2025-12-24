@@ -1,0 +1,15 @@
+apiVersion: storage.gcp.upbound.io/v1beta1
+kind: Bucket
+metadata:
+  name: simple-gcs-bucket
+spec:
+  forProvider:
+    location: asia-southeast1
+    storageClass: STANDARD
+    uniformBucketLevelAccess: true
+    forceDestroy: true
+    labels:
+      environment: staging
+  providerConfigRef:
+    name: default
+

@@ -27,3 +27,14 @@ metadata:
   name: upbound-provider-gcp-storage
 spec:
   package: xpkg.upbound.io/upbound/provider-gcp-storage:v2.4.0
+  runtimeConfigRef:
+    name: workload-identity-runtimeconfig
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: upbound-provider-gcp-sql
+spec:
+  package: xpkg.upbound.io/upbound/provider-gcp-sql:v2.4.0
+  runtimeConfigRef:
+    name: workload-identity-runtimeconfig

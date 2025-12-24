@@ -55,6 +55,9 @@ resource "google_service_account_iam_member" "ksa_workload_identity" {
   count = var.workload_identity_enable ? 1 : 0
 
   service_account_id = google_service_account.crossplane[0].name
-  role               = "roles/iam.workloadIdentityUser"
+  role = [
+    "roles/iam.workloadIdentityUser",
+    "roles/cloudsql.admin"
+  ]
   member             = "serviceAccount:${var.project_id}.svc.id.goog[${var.workload_identity_ksa_namespace}/${var.workload_identity_ksa_name}]"
 }

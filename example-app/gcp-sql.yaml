@@ -1,0 +1,31 @@
+apiVersion: sql.gcp.upbound.io/v1beta1
+kind: DatabaseInstance
+metadata:
+  name: enterprise-pg17
+spec:
+  forProvider:
+    databaseVersion: POSTGRES_17
+    deletionProtection: false
+    region: asia-southeast1
+    settings:
+      - tier: db-custom-2-4096
+        availabilityType: ZONAL
+        diskSize: 20
+        diskAutoresize: true
+  providerConfigRef:
+    name: default
+        # databaseFlags:
+        #   - name: cloudsql.iam_authentication
+        #     value: on
+---
+apiVersion: sql.gcp.upbound.io/v1beta1
+kind: Database
+metadata:
+  name: enterprise-pg17-db
+spec:
+  forProvider:
+    instanceRef:
+      name: enterprise-pg17
+  providerConfigRef:
+    name: default
+
