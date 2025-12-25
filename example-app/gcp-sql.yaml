@@ -4,28 +4,28 @@ metadata:
   name: enterprise-pg17
 spec:
   forProvider:
+    project: "cc-sa-sandbox-20200619"
     databaseVersion: POSTGRES_17
     deletionProtection: false
     region: asia-southeast1
     settings:
-      - tier: db-custom-2-4096
+      - tier: db-custom-2-8192
+        edition: ENTERPRISE
         availabilityType: ZONAL
         diskSize: 20
         diskAutoresize: true
   providerConfigRef:
     name: default
-        # databaseFlags:
-        #   - name: cloudsql.iam_authentication
-        #     value: on
 ---
-apiVersion: sql.gcp.upbound.io/v1beta1
-kind: Database
-metadata:
-  name: enterprise-pg17-db
-spec:
-  forProvider:
-    instanceRef:
-      name: enterprise-pg17
-  providerConfigRef:
-    name: default
+# apiVersion: sql.gcp.upbound.io/v1beta1
+# kind: Database
+# metadata:
+#   name: enterprise-pg17-db
+# spec:
+#   forProvider:
+#     project: "cc-sa-sandbox-20200619"
+#     instanceRef:
+#       name: enterprise-pg17
+#   providerConfigRef:
+#     name: default
 

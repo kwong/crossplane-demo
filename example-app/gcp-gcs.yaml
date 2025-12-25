@@ -10,6 +10,4 @@ spec:
     forceDestroy: true
     labels:
       environment: staging
-  providerConfigRef:
-    name: default
 

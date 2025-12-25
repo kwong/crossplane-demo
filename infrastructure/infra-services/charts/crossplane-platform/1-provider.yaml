@@ -9,7 +9,7 @@ spec:
     metadata:
       annotations:
         iam.gke.io/gcp-service-account: "crossplane-gsa@cc-sa-sandbox-20200619.iam.gserviceaccount.com"
-      name: crossplane-service-account
+      name: crossplane-provider-gcp
 ---
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
@@ -36,5 +36,14 @@ metadata:
   name: upbound-provider-gcp-sql
 spec:
   package: xpkg.upbound.io/upbound/provider-gcp-sql:v2.4.0
+  runtimeConfigRef:
+    name: workload-identity-runtimeconfig
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: upbound-provider-gcp-redis
+spec:
+  package: xpkg.upbound.io/upbound/provider-gcp-redis:v2.4.0
   runtimeConfigRef:
     name: workload-identity-runtimeconfig

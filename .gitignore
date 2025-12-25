@@ -75,3 +75,7 @@ coverage/
 
 # Allow exceptions if you want to keep example .tfvars file in repo
 !*.tfvars.example
+
+
+# Ignore GCP access token file
+creds.json

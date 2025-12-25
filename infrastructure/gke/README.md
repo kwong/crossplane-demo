@@ -22,6 +22,18 @@ Notes
  - `workload_identity_ksa_namespace = "crossplane-system"`
  - `workload_identity_ksa_name = "crossplane-provider-upjet-gcp"`
 
+When `workload_identity_enable = true` Terraform will create a Google Service Account (GSA) and assign the following roles to it at the project level to allow Crossplane to manage resources:
+
+- `roles/compute.networkAdmin`
+- `roles/container.admin`
+- `roles/iam.serviceAccountUser`
+- `roles/iam.securityAdmin`
+- `roles/iam.serviceAccountAdmin`
+- `roles/iam.serviceAccountKeyAdmin`
+- `roles/cloudsql.admin`
+
+If you prefer more restrictive permissions, adjust the roles in `main.tf` accordingly before applying.
+
 After `terraform apply`, use the `workload_identity_gsa_email` output and either add it to your Helm chart values as `workloadIdentity.gsaEmail`, or annotate an existing KSA:
 
 ```bash
