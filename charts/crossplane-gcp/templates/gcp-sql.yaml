@@ -1,0 +1,24 @@
+{{- $namespace := .Release.Namespace -}}
+{{- $projectID := .Values.gcp.project_id -}}
+{{- range .Values.gcp.sql }}
+{{with $sql := . }}
+apiVersion: sql.gcp.upbound.io/v1beta1
+kind: DatabaseInstance
+metadata:
+  name: {{ $sql.name }}
+  namespace: {{ $namespace }}
+spec:
+  forProvider:
+    project: {{ $projectID }}
+    databaseVersion: {{ $sql.database_version }}
+    region: {{ $sql.region }}
+    settings:
+      - tier: {{ $sql.tier }}
+        edition: {{ $sql.edition }}
+        availabilityType: ZONAL
+        diskSize: {{ $sql.disk_size }}
+        diskAutoresize: true
+  providerConfigRef:
+    name: default
+{{- end }}
+{{- end }}

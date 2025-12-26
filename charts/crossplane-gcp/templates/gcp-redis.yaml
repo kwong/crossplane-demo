@@ -1,0 +1,17 @@
+{{- $namespace := .Release.Namespace -}}
+{{- $projectID := .Values.gcp.project_id -}}
+{{- range .Values.gcp.redis }}
+{{ with $redis := . }}
+apiVersion: redis.gcp.upbound.io/v1beta2
+kind: Instance
+metadata:
+  name: {{ $redis.name }}
+  namespace: {{ $namespace }}
+spec:
+  forProvider:
+    authEnabled: {{ $redis.auth_enabled }}
+    memorySizeGb: {{ $redis.memory_size_gb }}
+    region: {{ $redis.region }}
+    tier: {{ $redis.tier }}
+{{- end }}
+{{- end }}

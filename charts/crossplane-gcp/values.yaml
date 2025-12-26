@@ -1,0 +1,24 @@
+gcp:
+  project_id: cc-sa-sandbox-20200619
+  region: asia-southeast1
+
+  sql:
+    - name: cloudsql-1
+      region: asia-southeast1
+      database_version: POSTGRES_17
+      edition: ENTERPRISE
+      tier: db-custom-2-8192
+      disk_size: 20
+    # - name: cloudsql-2
+    #   region: asia-southeast1
+    #   edition: ENTERPRISE
+    #   database_version: POSTGRES_17
+    #   tier: db-custom-2-8192
+    #   disk_size: 20
+
+  redis:
+    - name: redis-instance-1
+      region: asia-southeast1
+      tier: STANDARD_HA
+      memory_size_gb: 1
+      auth_enabled: true
