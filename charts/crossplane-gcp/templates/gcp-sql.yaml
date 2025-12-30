@@ -1,5 +1,6 @@
-{{- $namespace := .Release.Namespace -}}
+{{- $namespace := .Values.kubernetes.namespace -}}
 {{- $projectID := .Values.gcp.project_id -}}
+{{- $gsm := .Values.gcp.secretmanager -}}
 {{- range .Values.gcp.sql }}
 {{with $sql := . }}
 apiVersion: sql.gcp.upbound.io/v1beta1
@@ -15,10 +16,48 @@ spec:
     settings:
       - tier: {{ $sql.tier }}
         edition: {{ $sql.edition }}
-        availabilityType: ZONAL
+        availabilityType: {{ $sql.availability_type }}
         diskSize: {{ $sql.disk_size }}
-        diskAutoresize: true
-  providerConfigRef:
-    name: default
+        diskAutoresize: {{ $sql.disk_autoresize }}
+        deletionProtectionEnabled: false
+        databaseFlags: 
+        {{- toYaml $sql.databaseFlags | nindent 10 }}
+        ipConfiguration:
+          - ipv4Enabled: {{ $sql.ipConfiguration.ipv4Enabled | default false }}
+            privateNetwork: {{ $sql.ipConfiguration.privateNetwork | default "" }}
+
+  writeConnectionSecretToRef:
+    name: {{ printf "%s-conn" $sql.name }}
+    namespace: {{ $namespace }}
+---
+apiVersion: secretmanager.gcp.upbound.io/v1beta1
+kind: SecretVersion
+metadata:
+  name: secret-version
+  namespace: {{ $namespace }}
+spec:
+  forProvider:
+    secretDataSecretRef:
+      name: {{ $sql.name }}-conn
+      namespace: {{ $namespace }}
+      key: privateIP
+    secretRef:
+      name: host
+---
+{{- range $sql.users }}
+{{ with $user := . }}
+apiVersion: sql.gcp.upbound.io/v1beta1
+kind: User
+metadata:
+  name: {{ $user.name }}
+  namespace: {{ $namespace }}
+spec:
+  forProvider:
+    passwordWo: {{ $user.password }}
+    instanceRef:
+      name: {{ $sql.name }}
+---
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}
