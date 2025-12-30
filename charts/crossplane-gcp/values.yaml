@@ -1,6 +1,11 @@
+kubernetes:
+  namespace: default
+
 gcp:
   project_id: cc-sa-sandbox-20200619
   region: asia-southeast1
+
+  gsm_project_id: cc-sa-sandbox-20200619
 
   sql:
     - name: cloudsql-1
@@ -9,6 +14,22 @@ gcp:
       edition: ENTERPRISE
       tier: db-custom-2-8192
       disk_size: 20
+      availabilityType: ZONAL
+      diskAutoresize: true
+      ipConfiguration:
+        privateNetwork: projects/cc-sa-sandbox-20200619/global/networks/default
+        ipv4Enabled: false
+      databaseFlags:
+        - name: cloudsql.iam_authentication
+          value: "on"
+        - name: timezone
+          value: "UTC+7"
+      users:
+        - name: dbuser
+          password: placeholder1
+        - name: dbuser2
+          password: placeholder2
+      
     # - name: cloudsql-2
     #   region: asia-southeast1
     #   edition: ENTERPRISE
@@ -17,8 +38,12 @@ gcp:
     #   disk_size: 20
 
   redis:
-    - name: redis-instance-1
-      region: asia-southeast1
-      tier: STANDARD_HA
-      memory_size_gb: 1
-      auth_enabled: true
+    # - name: redis-instance-1
+    #   region: asia-southeast1
+    #   tier: STANDARD_HA
+    #   memory_size_gb: 1
+    #   auth_enabled: true
+
+  secretmanager:
+    - name: host
+      project_id: cc-sa-sandbox-20200619
