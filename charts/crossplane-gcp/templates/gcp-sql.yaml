@@ -4,6 +4,7 @@
 {{- $gsm := .Values.gsm -}}
 {{- range .Values.cloudsql }}
 {{with $sqlInstance := . }}
+---
 apiVersion: sql.gcp.upbound.io/v1beta1
 kind: DatabaseInstance
 metadata:
@@ -28,6 +29,5 @@ spec:
   writeConnectionSecretToRef:
     name: {{ $prefix }}-{{ $sqlInstance.name }}-conn
     namespace: {{ $namespace }}
----
 {{- end }}
 {{- end }}

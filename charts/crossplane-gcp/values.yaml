@@ -5,13 +5,11 @@ kubernetes:
 application:
   group: test
   runtime: golang
-  name: test-app-v1
+  name: test-app-v2
 
 gcp:
   projectId: cc-sa-sandbox-20200619
   region: asia-southeast1
-
-  gsm_project_id: cc-sa-sandbox-20200619
 
 cloudsql:
   - name: cloudsql-1
@@ -48,6 +46,3 @@ cloudsql:
 gsm:
   projectId: cc-sa-sandbox-20200619
   region: asia-southeast1
-  secrets:
-    - name: test-app-v1-cloudsql-1-host
-    - name: test-app-v1-cloudsql-1-password

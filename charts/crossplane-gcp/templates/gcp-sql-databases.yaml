@@ -1,8 +1,10 @@
 {{- $projectID := .Values.gcp.projectId -}}
-{{- range $sqlInstances := .Values.gcp.sql }}
+{{- $prefix := .Values.application.name }}
+{{- range $sqlInstances := .Values.cloudsql }}
 {{- range $database := $sqlInstances.databases }}
+{{ with $sqlInstance := . }}
 ---
-apiVersion: sql.gcp.upbound.io/v1beta1
+apiVersion: sql.gcp.upbound.io/v1beta1  
 kind: Database
 metadata:
   name: {{ $database.name }}
@@ -10,6 +12,7 @@ spec:
   forProvider:
     charset: {{ $database.charset }}
     instanceRef:
-      name: {{ $sqlInstances.name }}
+      name: {{ $prefix }}-{{ $sqlInstance.name }}
+{{- end }}
 {{- end }}
 {{- end }}

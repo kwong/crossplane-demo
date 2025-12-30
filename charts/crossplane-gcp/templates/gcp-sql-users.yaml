@@ -4,19 +4,21 @@
 {{- $prefix := .Values.application.name }}
 {{- $projectID := .Values.gcp.project_id -}}
 {{- range $sqlInstances := .Values.cloudsql }}
-{{- range $user := $sqlInstances.users }}
+{{ with $sqlInstance := . }}
+{{- range $user := $sqlInstance.users }}
 ---
 apiVersion: sql.gcp.upbound.io/v1beta1
 kind: User
 metadata:
-  name: {{ $prefix }}-{{ $sqlInstances.name }}-{{ $user.name }}
+  name: {{ $prefix }}-{{ $sqlInstance.name }}-{{ $user.name }}
 spec:
   forProvider:
     passwordSecretRef:
-      name: {{ $prefix }}-{{ $sqlInstances.name }}-{{ $user.name }}-password
+      name: {{ $prefix }}-{{ $sqlInstance.name }}-{{ $user.name }}-password
       key: password
       namespace: {{ $namespace }}
     instanceRef:
-      name: {{ $sqlInstances.name }}
+      name: {{ $prefix }}-{{ $sqlInstance.name }}
+{{- end }}
 {{- end }}
 {{- end }}
