@@ -1,0 +1,22 @@
+{{/* TODO: Confirm with Ajaib team if this is the expected way to generate random password */}}
+
+{{- $namespace := .Values.kubernetes.namespace -}}
+{{- $prefix := .Values.application.name }}
+{{- $projectID := .Values.gcp.project_id -}}
+{{- range $sqlInstances := .Values.cloudsql }}
+{{- range $user := $sqlInstances.users }}
+---
+apiVersion: sql.gcp.upbound.io/v1beta1
+kind: User
+metadata:
+  name: {{ $prefix }}-{{ $sqlInstances.name }}-{{ $user.name }}
+spec:
+  forProvider:
+    passwordSecretRef:
+      name: {{ $prefix }}-{{ $sqlInstances.name }}-{{ $user.name }}-password
+      key: password
+      namespace: {{ $namespace }}
+    instanceRef:
+      name: {{ $sqlInstances.name }}
+{{- end }}
+{{- end }}

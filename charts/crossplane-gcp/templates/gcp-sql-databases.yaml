@@ -1,0 +1,15 @@
+{{- $projectID := .Values.gcp.projectId -}}
+{{- range $sqlInstances := .Values.gcp.sql }}
+{{- range $database := $sqlInstances.databases }}
+---
+apiVersion: sql.gcp.upbound.io/v1beta1
+kind: Database
+metadata:
+  name: {{ $database.name }}
+spec:
+  forProvider:
+    charset: {{ $database.charset }}
+    instanceRef:
+      name: {{ $sqlInstances.name }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,92 @@
+application:
+  name: payment-ledger-api
+  env: staging
+
+kubernetes:
+  namespace: payment-ledger
+  clusterName: stg-payment-cluster-0
+
+gcp:
+  project: ajaib-stg-payment
+
+postgres:
+  enabled: false
+  providerConfigRef: gcp-provider
+  instanceRefName: ""
+  database:
+    name: ""
+  user:
+    name: ""
+    passwordSecret:
+      name: ""
+      key: ""
+
+serviceAccount:
+  enabled: true
+  identity:
+    enabled: true
+    iam:
+      roles:
+        - "roles/iam.workloadIdentityUser",
+        - "roles/spanner.databaseUser",
+        - "roles/iam.serviceAccountTokenCreator"
+
+image:
+  repository: payment-ledger-v1
+  tag: latest
+  pullPolicy: Always
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 400m
+    memory: 512Mi
+
+ports:
+  - name: grpc
+    containerPort: 8080
+    protocol: TCP
+  - name: grpc-health
+    containerPort: 8889
+    protocol: TCP
+  - name: metrics
+    containerPort: 8085
+    protocol: TCP
+  - name: app
+    containerPort: 8888
+    protocol: TCP
+
+services:
+  - name: api
+    port: 80
+    targetPortName: http
+    type: ClusterIP
+    annotations: {}
+    ingress:
+      enabled: true
+      className: nginx-internal
+      host: payment-ledger-api.stg.ajaib.int
+      path: /
+
+  - name: metrics
+    port: 9090
+    targetPortName: metrics
+    type: ClusterIP
+    annotations:
+      prometheus.io/scrape: "true"
+
+command:
+  - /app/main
+  - api
+
+envVars:
+  API_SERVER_GRPC_PORT: "8080"
+  HEALTH_GRPC_PORT: "8889"
+  METRICS_PORT: "8085"
+  METRICS_ENDPOINT: /api/metrics
+
+configMap:
+  enabled: false
+  name:

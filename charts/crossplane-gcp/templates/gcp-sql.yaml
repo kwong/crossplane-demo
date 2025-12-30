@@ -1,63 +1,33 @@
+{{- $prefix := .Values.application.name }}
 {{- $namespace := .Values.kubernetes.namespace -}}
 {{- $projectID := .Values.gcp.project_id -}}
-{{- $gsm := .Values.gcp.secretmanager -}}
-{{- range .Values.gcp.sql }}
-{{with $sql := . }}
+{{- $gsm := .Values.gsm -}}
+{{- range .Values.cloudsql }}
+{{with $sqlInstance := . }}
 apiVersion: sql.gcp.upbound.io/v1beta1
 kind: DatabaseInstance
 metadata:
-  name: {{ $sql.name }}
-  namespace: {{ $namespace }}
+  name: {{ $prefix }}-{{ $sqlInstance.name }}
 spec:
   forProvider:
     project: {{ $projectID }}
-    databaseVersion: {{ $sql.database_version }}
-    region: {{ $sql.region }}
+    databaseVersion: {{ $sqlInstance.database_version }}
+    region: {{ $sqlInstance.region }}
     settings:
-      - tier: {{ $sql.tier }}
-        edition: {{ $sql.edition }}
-        availabilityType: {{ $sql.availability_type }}
-        diskSize: {{ $sql.disk_size }}
-        diskAutoresize: {{ $sql.disk_autoresize }}
+      - tier: {{ $sqlInstance.tier }}
+        edition: {{ $sqlInstance.edition }}
+        availabilityType: {{ $sqlInstance.availability_type }}
+        diskSize: {{ $sqlInstance.disk_size }}
+        diskAutoresize: {{ $sqlInstance.disk_autoresize }}
         deletionProtectionEnabled: false
         databaseFlags: 
-        {{- toYaml $sql.databaseFlags | nindent 10 }}
+        {{- toYaml $sqlInstance.databaseFlags | nindent 10 }}
         ipConfiguration:
-          - ipv4Enabled: {{ $sql.ipConfiguration.ipv4Enabled | default false }}
-            privateNetwork: {{ $sql.ipConfiguration.privateNetwork | default "" }}
-
+          - ipv4Enabled: {{ $sqlInstance.ipConfiguration.ipv4Enabled | default false }}
+            privateNetwork: {{ $sqlInstance.ipConfiguration.privateNetwork | default "" }}
   writeConnectionSecretToRef:
-    name: {{ printf "%s-conn" $sql.name }}
+    name: {{ $prefix }}-{{ $sqlInstance.name }}-conn
     namespace: {{ $namespace }}
 ---
-apiVersion: secretmanager.gcp.upbound.io/v1beta1
-kind: SecretVersion
-metadata:
-  name: secret-version
-  namespace: {{ $namespace }}
-spec:
-  forProvider:
-    secretDataSecretRef:
-      name: {{ $sql.name }}-conn
-      namespace: {{ $namespace }}
-      key: privateIP
-    secretRef:
-      name: host
----
-{{- range $sql.users }}
-{{ with $user := . }}
-apiVersion: sql.gcp.upbound.io/v1beta1
-kind: User
-metadata:
-  name: {{ $user.name }}
-  namespace: {{ $namespace }}
-spec:
-  forProvider:
-    passwordWo: {{ $user.password }}
-    instanceRef:
-      name: {{ $sql.name }}
----
-{{- end }}
-{{- end }}
 {{- end }}
 {{- end }}

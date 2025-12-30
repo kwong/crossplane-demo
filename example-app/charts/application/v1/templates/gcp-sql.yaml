@@ -1,0 +1,35 @@
+{{- if .Values.postgres.enabled }}
+apiVersion: sql.gcp.upbound.io/v1beta1
+kind: Database
+metadata:
+  name: {{ .Values.postgres.database.name | default (printf "%s-db" .Values.application.name) }}
+spec:
+  forProvider:
+    project: {{ .Values.gcp.project }}
+    instanceRef:
+      name: {{ required "postgres.instanceRefName is required" .Values.postgres.instanceRefName }}
+    name: {{ .Values.postgres.database.name | default (printf "%s-db" .Values.application.name) }}
+  {{- if .Values.postgres.providerConfigRef }}
+  providerConfigRef:
+    name: {{ .Values.postgres.providerConfigRef }}
+  {{- end }}
+---
+apiVersion: sql.gcp.upbound.io/v1beta1
+kind: User
+metadata:
+  name: {{ .Values.postgres.user.name | default (printf "%s-user" .Values.application.name) }}
+spec:
+  forProvider:
+    project: {{ .Values.gcp.project }}
+    instanceRef:
+      name: {{ required "postgres.instanceRefName is required" .Values.postgres.instanceRefName }}
+    name: {{ .Values.postgres.user.name | default (printf "%s-user" .Values.application.name) }}
+    passwordSecretRef:
+      name: {{ required "postgres.user.passwordSecret.name is required" .Values.postgres.user.passwordSecret.name }}
+      namespace: {{ .Values.kubernetes.namespace }}
+      key: {{ required "postgres.user.passwordSecret.key is required" .Values.postgres.user.passwordSecret.key }}
+  {{- if .Values.postgres.providerConfigRef }}
+  providerConfigRef:
+    name: {{ .Values.postgres.providerConfigRef }}
+  {{- end }}
+{{- end }}
