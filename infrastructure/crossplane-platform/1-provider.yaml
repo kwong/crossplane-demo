@@ -1,0 +1,59 @@
+# https://docs.upbound.io/manuals/packages/providers/authentication/#gcp-workload-identity
+
+apiVersion: pkg.crossplane.io/v1beta1
+kind: DeploymentRuntimeConfig
+metadata:
+  name: workload-identity-runtimeconfig
+spec:
+  serviceAccountTemplate:
+    metadata:
+      annotations:
+        iam.gke.io/gcp-service-account: "crossplane-gsa@cc-sa-sandbox-20200619.iam.gserviceaccount.com"
+      name: crossplane-provider-gcp
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: upbound-provider-family-gcp
+spec:
+  package: xpkg.upbound.io/upbound/provider-family-gcp:v2.4.0
+  runtimeConfigRef:
+    name: workload-identity-runtimeconfig
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+# gcs storage
+  name: upbound-provider-gcp-storage
+spec:
+  package: xpkg.upbound.io/upbound/provider-gcp-storage:v2.4.0
+  runtimeConfigRef:
+    name: workload-identity-runtimeconfig
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: upbound-provider-gcp-sql
+spec:
+  package: xpkg.upbound.io/upbound/provider-gcp-sql:v2.4.0
+  runtimeConfigRef:
+    name: workload-identity-runtimeconfig
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: upbound-provider-gcp-redis
+spec:
+  package: xpkg.upbound.io/upbound/provider-gcp-redis:v2.4.0
+  runtimeConfigRef:
+    name: workload-identity-runtimeconfig
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: upbound-provider-gcp-secretmanager
+spec:
+  package: xpkg.upbound.io/upbound/provider-gcp-secretmanager:v2.4.0
+  runtimeConfigRef:
+    name: workload-identity-runtimeconfig
+---

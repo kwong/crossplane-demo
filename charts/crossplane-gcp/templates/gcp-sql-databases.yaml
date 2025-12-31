@@ -1,8 +1,8 @@
 {{- $projectID := .Values.gcp.projectId -}}
 {{- $prefix := .Values.application.name }}
 {{- range $sqlInstances := .Values.cloudsql }}
-{{- range $database := $sqlInstances.databases }}
 {{ with $sqlInstance := . }}
+{{- range $database := $sqlInstance.databases }}
 ---
 apiVersion: sql.gcp.upbound.io/v1beta1  
 kind: Database

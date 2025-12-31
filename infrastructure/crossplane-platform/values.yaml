@@ -1,0 +1,35 @@
+# Meta-chart values for installing Crossplane + provider-upjet-gcp
+# NOTE: This chart depends on upstream charts hosted at https://charts.crossplane.io/stable
+
+crossplane:
+  # You can override any upstream chart values here
+  installCRDs: true
+
+
+generateProviderConfig: true
+generateProvider: true
+
+providerConfig:
+  name: default
+  namespace: crossplane-system
+  apiVersion: gcp.m.upbound.io/v1beta1
+  useInjectedIdentity: true
+  projectID: "cc-sa-sandbox-20200619" # should inject at deployment time
+
+workloadIdentity:
+  # If you set createKSA=true the chart will create a Kubernetes ServiceAccount
+  # and annotate it with `iam.gke.io/gcp-service-account` using `gsaEmail`.
+  createKSA: true
+  ksaName: crossplane-provider-upjet-gcp
+  ksaNamespace: crossplane-system
+  # Set this to the GSA email output by Terraform when workload_identity_enable=true
+  gsaEmail: "crossplane-gsa@cc-sa-sandbox-20200619.iam.gserviceaccount.com"
+
+# Notes:
+# - Do NOT store service account JSON in values.yaml; create a secret manually or with sealed-secrets.
+# - After adding this chart, run `helm repo add crossplane-stable https://charts.crossplane.io/stable && helm dependency update` in the chart directory.
+
+functionPatchAndTransform:
+  enabled: true
+  apiVersion: pkg.crossplane.io/v1
+  package: xpkg.crossplane.io/crossplane-contrib/function-patch-and-transform:v0.8.2
