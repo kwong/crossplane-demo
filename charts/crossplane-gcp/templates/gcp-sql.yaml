@@ -26,6 +26,10 @@ spec:
         ipConfiguration:
           - ipv4Enabled: {{ $sqlInstance.ipConfiguration.ipv4Enabled | default false }}
             privateNetwork: {{ $sqlInstance.ipConfiguration.privateNetwork | default "" }}
+    rootPasswordSecretRef:
+      name: {{ $prefix }}-{{ $sqlInstance.name }}-root-password
+      namespace: {{ $namespace }}
+      key: password
   writeConnectionSecretToRef:
     name: {{ $prefix }}-{{ $sqlInstance.name }}-conn
     namespace: {{ $namespace }}

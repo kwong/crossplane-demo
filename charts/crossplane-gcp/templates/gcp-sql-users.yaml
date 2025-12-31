@@ -17,6 +17,9 @@ spec:
       name: {{ $prefix }}-{{ $sqlInstance.name }}-{{ $user.name }}-password
       key: password
       namespace: {{ $namespace }}
+    {{- if contains "mysql" (lower $sqlInstance.database_version) }}
+    host: {{ $user.host | default "%" | quote }}
+    {{- end }}
     instanceRef:
       name: {{ $prefix }}-{{ $sqlInstance.name }}
 {{- end }}
