@@ -12,14 +12,14 @@ metadata:
 spec:
   forProvider:
     project: {{ $projectID }}
-    databaseVersion: {{ $sqlInstance.database_version }}
+    databaseVersion: {{ $sqlInstance.databaseVersion }}
     region: {{ $sqlInstance.region }}
     settings:
       - tier: {{ $sqlInstance.tier }}
         edition: {{ $sqlInstance.edition }}
-        availabilityType: {{ $sqlInstance.availability_type }}
-        diskSize: {{ $sqlInstance.disk_size }}
-        diskAutoresize: {{ $sqlInstance.disk_autoresize }}
+        availabilityType: {{ $sqlInstance.availabilityType }}
+        diskSize: {{ $sqlInstance.diskSize }}
+        diskAutoresize: {{ $sqlInstance.diskAutoresize }}
         deletionProtectionEnabled: false
         databaseFlags: 
         {{- toYaml $sqlInstance.databaseFlags | nindent 10 }}

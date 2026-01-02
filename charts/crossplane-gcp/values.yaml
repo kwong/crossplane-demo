@@ -14,7 +14,7 @@ gcp:
 cloudsql:
   - name: cloudsql-1
     region: asia-southeast1
-    database_version: POSTGRES_17
+    databaseVersion: POSTGRES_17
     edition: ENTERPRISE
     tier: db-custom-2-8192
     diskSize: 20
