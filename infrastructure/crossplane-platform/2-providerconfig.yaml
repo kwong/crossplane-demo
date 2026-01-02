@@ -5,7 +5,9 @@ metadata:
 spec:
   projectID: "cc-sa-sandbox-20200619"
   credentials:
-    #source: InjectedIdentity # common to all gcp providers
+    # source: InjectedIdentity # common to all gcp providers
+    # impersonateServiceAccount:
+    #   name: "crossplane-gsa@cc-sa-sandbox-20200619.iam.gserviceaccount.com"
     source: AccessToken
     secretRef:
       namespace: crossplane-system
