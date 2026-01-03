@@ -19,6 +19,11 @@ resource "google_container_cluster" "primary" {
   network    = var.network
   subnetwork = var.subnetwork
 
+  # enable workload identity
+  workload_identity_config {
+    workload_pool = "${var.project_id}.svc.id.goog"
+  }
+
   ip_allocation_policy {}
 
   dynamic "addons_config" {
@@ -27,9 +32,9 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  lifecycle {
-    ignore_changes = [node_pool]
-  }
+  # lifecycle {
+  #   ignore_changes = [node_pool]
+  # }
 }
 
 resource "google_container_node_pool" "primary_nodes" {
@@ -42,11 +47,13 @@ resource "google_container_node_pool" "primary_nodes" {
   node_config {
     machine_type = var.machine_type
     oauth_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
-
+    workload_metadata_config {
+      mode = "GKE_METADATA"
+    }
   }
-  lifecycle {
-    ignore_changes = [node_config]
-  }
+  # lifecycle {
+  #   ignore_changes = [node_config]
+  # }
 
 }
 
