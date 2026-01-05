@@ -3,7 +3,7 @@ name: crossplane-gcp-bucket
 description: A Helm chart that installs Crossplane resources to provision a Google Cloud Storage bucket.
 type: application
 version: 0.1.0
-appVersion: "0.1.0"
+appVersion: "0.1.1"
 keywords:
   - crossplane
   - gcp
