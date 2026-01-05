@@ -2,7 +2,7 @@ apiVersion: v2
 name: crossplane-platform
 description: Meta-chart to install Crossplane and the GCP provider (wrapper over upstream charts)
 type: application
-version: 0.1.0
+version: 0.1.1
 appVersion: "0.1.0"
 
 dependencies:
