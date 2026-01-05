@@ -1,5 +1,20 @@
 apiVersion: v1
 entries:
+  crossplane-gcp:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2026-01-05T10:05:12.025706796Z"
+    description: A Helm chart that installs Crossplane resources to provision a Google
+      Cloud Storage bucket.
+    digest: debd69abcb614527864c365e984fddbd26e365044c816dbe0148eb8b80d41a3c
+    keywords:
+    - crossplane
+    - gcp
+    name: crossplane-gcp
+    type: application
+    urls:
+    - https://github.com/kwong/crossplane-demo/releases/download/crossplane-gcp-0.1.0/crossplane-gcp-0.1.0.tgz
+    version: 0.1.0
   crossplane-gcp-bucket:
   - apiVersion: v2
     appVersion: 0.1.1
@@ -33,4 +48,4 @@ entries:
     urls:
     - https://github.com/kwong/crossplane-demo/releases/download/crossplane-gcp-bucket-0.1.0/crossplane-gcp-bucket-0.1.0.tgz
     version: 0.1.0
-generated: "2026-01-05T10:03:24.731592115Z"
+generated: "2026-01-05T10:05:12.025720992Z"
