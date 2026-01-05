@@ -12,34 +12,35 @@ gcp:
   region: asia-southeast1
 
 cloudsql:
-  - name: cloudsql-1
-    region: asia-southeast1
-    databaseVersion: POSTGRES_17
-    edition: ENTERPRISE
-    tier: db-custom-2-8192
-    diskSize: 20
-    availabilityType: ZONAL
-    diskAutoresize: true
-    ipConfiguration:
-      privateNetwork: projects/cc-sa-sandbox-20200619/global/networks/default
-      ipv4Enabled: true
-    databases:
-      - name: test-db
-        charset: UTF8
-    databaseFlags:
-      - name: cloudsql.iam_authentication
-        value: "on"
-      - name: timezone
-        value: "UTC+7"
-    users:
-      - name: dbuser
-      - name: dbuser2
-  # - name: cloudsql-2
+  # - name: cloudsql-1
   #   region: asia-southeast1
-  #   database_version: MYSQL_8_4
+  #   databaseVersion: POSTGRES_17
   #   edition: ENTERPRISE
   #   tier: db-custom-2-8192
-  #   disk_size: 20
+  #   diskSize: 20
+  #   availabilityType: ZONAL
+  #   diskAutoresize: true
+  #   deletionProtectionEnabled: false
+  #   ipConfiguration:
+  #     privateNetwork: projects/cc-sa-sandbox-20200619/global/networks/default
+  #     ipv4Enabled: true
+  #   databases:
+  #     - name: test-db
+  #       charset: UTF8
+  #   databaseFlags:
+  #     - name: cloudsql.iam_authentication
+  #       value: "on"
+  #     - name: timezone
+  #       value: "UTC+7"
+  #   users:
+  #     - name: dbuser
+  #     - name: dbuser2
+  # - name: cloudsql-2
+  #   region: asia-southeast1
+  #   databaseVersion: MYSQL_8_4
+  #   edition: ENTERPRISE
+  #   tier: db-custom-2-8192
+  #   diskSize: 20
   #   availabilityType: ZONAL
   #   diskAutoresize: true
   #   ipConfiguration:
@@ -63,5 +64,5 @@ cloudsql:
 
 
 gsm:
-  projectId: cc-sa-sandbox-20200619
+  project: cc-sa-sandbox-20200619
   region: asia-southeast1

@@ -1,6 +1,6 @@
 apiVersion: v2
 name: crossplane-gcp
-description: A Helm chart that installs Crossplane resources to provision a Google Cloud Storage bucket.
+description: A Helm chart that installs Crossplane resources.
 type: application
 version: 0.1.0
 appVersion: "0.1.0"

@@ -5,6 +5,7 @@
 {{- $projectID := .Values.gcp.project_id -}}
 {{- range $sqlInstances := .Values.cloudsql }}
 {{ with $sqlInstance := . }}
+{{- $dbVersion := $sqlInstance.databaseVersion | default $sqlInstance.database_version | toString }}
 {{- range $user := $sqlInstance.users }}
 ---
 apiVersion: sql.gcp.upbound.io/v1beta1
@@ -17,7 +18,7 @@ spec:
       name: {{ $prefix }}-{{ $sqlInstance.name }}-{{ $user.name }}-password
       key: password
       namespace: {{ $namespace }}
-    {{- if contains "mysql" (lower $sqlInstance.databaseVersion) }}
+    {{- if contains "mysql" (lower $dbVersion) }}
     host: {{ $user.host | default "%" | quote }}
     {{- end }}
     instanceRef:

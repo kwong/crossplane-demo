@@ -1,6 +1,6 @@
 {{- $prefix := .Values.application.name }}
 {{- $namespace := .Values.kubernetes.namespace -}}
-{{- $projectID := .Values.gcp.project_id -}}
+{{- $projectID := .Values.gsm.project -}}
 {{- $gsm := .Values.gsm -}}
 {{- range .Values.cloudsql }}
 {{with $sqlInstance := . }}
@@ -20,7 +20,7 @@ spec:
         availabilityType: {{ $sqlInstance.availabilityType }}
         diskSize: {{ $sqlInstance.diskSize }}
         diskAutoresize: {{ $sqlInstance.diskAutoresize }}
-        deletionProtectionEnabled: false
+        deletionProtectionEnabled: {{ $sqlInstance.deletionProtectionEnabled | default false }}
         databaseFlags: 
         {{- toYaml $sqlInstance.databaseFlags | nindent 10 }}
         ipConfiguration:
