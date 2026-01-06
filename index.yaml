@@ -2,6 +2,19 @@ apiVersion: v1
 entries:
   crossplane-gcp:
   - apiVersion: v2
+    appVersion: 0.1.3
+    created: "2026-01-06T02:24:07.176538029Z"
+    description: A Helm chart that installs Crossplane resources.
+    digest: 63f1545c1e5b753a5d9faca5c48e5c62d4584746179400f2be5a69b5b31f4b98
+    keywords:
+    - crossplane
+    - gcp
+    name: crossplane-gcp
+    type: application
+    urls:
+    - https://github.com/kwong/crossplane-demo/releases/download/crossplane-gcp-0.1.3/crossplane-gcp-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
     appVersion: 0.1.0
     created: "2026-01-05T10:50:39.719491391Z"
     description: A Helm chart that installs Crossplane resources.
@@ -27,4 +40,4 @@ entries:
     urls:
     - https://github.com/kwong/crossplane-demo/releases/download/crossplane-gcp-0.1.1/crossplane-gcp-0.1.1.tgz
     version: 0.1.1
-generated: "2026-01-05T10:50:39.71950104Z"
+generated: "2026-01-06T02:24:07.176547978Z"
