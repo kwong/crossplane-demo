@@ -20,12 +20,21 @@ spec:
         availabilityType: {{ $sqlInstance.availabilityType }}
         diskSize: {{ $sqlInstance.diskSize }}
         diskAutoresize: {{ $sqlInstance.diskAutoresize }}
-        deletionProtectionEnabled: {{ $sqlInstance.deletionProtectionEnabled | default false }}
+        deletionProtection: {{ $sqlInstance.deletionProtection | default true }}
         databaseFlags: 
         {{- toYaml $sqlInstance.databaseFlags | nindent 10 }}
         ipConfiguration:
           - ipv4Enabled: {{ $sqlInstance.ipConfiguration.ipv4Enabled | default false }}
             privateNetwork: {{ $sqlInstance.ipConfiguration.privateNetwork | default "" }}
+    {{/* backup configuration */}}
+    backupConfiguration:
+      enabled: {{ $sqlInstance.backupConfiguration.enabled | default false }}
+      backupRetentionSettings:
+        retainedBackups: {{ $sqlInstance.backupConfiguration.backupRetentionSettings.retainedBackups | default 7 }}
+      pointInTimeRecoveryEnabled: {{ $sqlInstance.backupConfiguration.pointInTimeRecoveryEnabled | default false }}
+      location: {{ $sqlInstance.backupConfiguration.location | default "asia-southeast1" }}
+      backupRetentionUnit: {{ $sqlInstance.backupConfiguration.backupRetentionUnit | default "DAY" }}
+      backupStartTime: {{ $sqlInstance.backupConfiguration.backupStartTime | default "00:00" }}
     rootPasswordSecretRef:
       name: {{ $prefix }}-{{ $sqlInstance.name }}-root-password
       namespace: {{ $namespace }}

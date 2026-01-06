@@ -12,28 +12,42 @@ gcp:
   region: asia-southeast1
 
 cloudsql:
-  # - name: cloudsql-1
-  #   region: asia-southeast1
-  #   databaseVersion: POSTGRES_17
-  #   edition: ENTERPRISE
-  #   tier: db-custom-2-8192
-  #   diskSize: 20
-  #   availabilityType: ZONAL
-  #   diskAutoresize: true
-  #   deletionProtectionEnabled: false
-  #   ipConfiguration:
-  #     privateNetwork: projects/cc-sa-sandbox-20200619/global/networks/default
-  #     ipv4Enabled: true
-  #   databases:
-  #     - name: test-db
-  #       charset: UTF8
-  #   databaseFlags:
-  #     - name: cloudsql.iam_authentication
-  #       value: "on"
-  #     - name: timezone
-  #       value: "UTC+7"
-  #   users:
-  #     - name: dbuser
+  - name: cloudsql-1
+    region: asia-southeast1
+    databaseVersion: POSTGRES_17
+    edition: ENTERPRISE
+    tier: db-custom-2-8192
+    diskSize: 20
+    availabilityType: ZONAL
+    diskAutoresize: true
+    deletionProtection: false
+    ipConfiguration:
+      privateNetwork: projects/cc-sa-sandbox-20200619/global/networks/default
+      ipv4Enabled: true
+    # backup configuration
+    backupConfiguration:
+      enabled: true
+      backupRetentionSettings:
+        retainedBackups: 7
+      # PIT recovery configuration: valid only for PostgreSQL and MSSQL
+      pointInTimeRecoveryEnabled: true
+      location: asia-southeast1
+      backupRetentionUnit: DAY
+      backupStartTime: "00:00"
+    databases:
+      - name: default
+        charset: UTF8
+    databaseFlags:
+      - name: cloudsql.iam_authentication
+        value: "on"
+      - name: timezone
+        value: "UTC+7"
+      - name: cloudsql.enable_pgaudit
+        value: "on"
+      - name: pgaudit.log
+        value: 'all'
+    users:
+      - name: dbuser1
   #     - name: dbuser2
   # - name: cloudsql-2
   #   region: asia-southeast1
